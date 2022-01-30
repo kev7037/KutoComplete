@@ -1,13 +1,26 @@
+/*!
+ * KutoComplete Library v1.0
+ * Only Vanilla JavaScript
+ * https://github.com/kev7037/KutoComplete.Js
+ *
+ * Released under the MIT license
+ *
+ * Author: kev7037
+ * Date: 2022-01-25
+ */
+
 class atc_kev_model {
     atc_seperator;
     atc_data;
     atc_additional_start_char;
     atc_additional_end_char;
-    constructor(seperator, data, additional_start_char, additional_end_char) {
+    atc_additional_start_char_for_validaton;
+    constructor(seperator, data, additional_start_char, additional_end_char, atc_additional_start_char_for_validaton) {
         this.atc_data = data;
         this.atc_seperator = seperator;
         this.atc_additional_start_char = additional_start_char;
         this.atc_additional_end_char = additional_end_char;
+        this.atc_additional_start_char_for_validaton = atc_additional_start_char_for_validaton;
     }
 }
 
@@ -42,9 +55,9 @@ class atc_kev {
 
             this.atc_textIndex = e.target.selectionStart;
 
-            let inputElText =  document.getElementById(this.atc_input_id).value;
+            let inputElText = document.getElementById(this.atc_input_id).value;
             let inputText_bf_split = inputElText.substring(0, this.atc_textIndex).split(' ');
-            let inputText = inputText_bf_split[inputText_bf_split.length - 1];
+            let inputText = inputText_bf_split[inputText_bf_split.length - 1].toLowerCase();
 
 
             if (!!this.atc_select_element) {
@@ -85,7 +98,7 @@ class atc_kev {
 
                     this.atc_select_element.appendChild(li);
 
-                    if (!(e.key == "ArrowUp"|| e.key == "ArrowLeft" || e.key == "ArrowRight")) {
+                    if (!(e.key == "ArrowUp" || e.key == "ArrowLeft" || e.key == "ArrowRight")) {
                         this.atc_select_element.focus();
                     }
                 }
@@ -100,7 +113,7 @@ class atc_kev {
             }
             if (e.key == "ArrowDown") // down
                 this.atc_select_element.selectedIndex = 0;
-            
+
         }
 
 
@@ -115,7 +128,7 @@ class atc_kev {
             sel.style.overflowY = "auto";
 
             if (!!atc_select_classList) {
-                Object.assign(sel, {className: atc_select_classList});
+                Object.assign(sel, { className: atc_select_classList });
             }
 
             this.atc_input_element.parentNode.insertBefore(sel, this.atc_input_element.nextSibling);
@@ -143,7 +156,7 @@ class atc_kev {
                         break;
 
                     default:
-                        
+
                         this.atc_input_element.focus();
                         break;
                 }
@@ -154,20 +167,20 @@ class atc_kev {
                 this.atc_on_option_selected();
             }
 
-            this.atc_select_element = sel;            
+            this.atc_select_element = sel;
         };
     }
 
-    atc_on_option_selected(){
+    atc_on_option_selected() {
 
         let textAfterIndx = this.atc_removeCharAfterIndex(this.atc_input_element.value, this.atc_textIndex);
 
         let selected_atc_arr = this.atc_src_arr[this.atc_selectedDict];
-        this.atc_input_element.value = 
+        this.atc_input_element.value =
             this.atc_removeCharFromIndex(this.atc_input_element.value, this.atc_textIndex,
-                                        selected_atc_arr.atc_data.find(x => x == this.atc_select_element.options[this.atc_select_element.selectedIndex].text)
-                                        + (selected_atc_arr.atc_additional_start_char ?? (selected_atc_arr.atc_additional_end_char ?? ''))
-                                        + ' ') + textAfterIndx;
+                selected_atc_arr.atc_data.find(x => x == this.atc_select_element.options[this.atc_select_element.selectedIndex].text)
+                + (selected_atc_arr.atc_additional_start_char ?? (selected_atc_arr.atc_additional_end_char ?? ''))
+                + ' ') + textAfterIndx;
 
         this.atc_select_element.remove();
         this.atc_select_element = null;
@@ -177,7 +190,7 @@ class atc_kev {
     //js function to remove character from end of string until it reaches a space
     atc_removeCharAfterIndex(str, index) {
         for (let i = index; i <= str.length; i++) {
-            if (!(!!str[i])) 
+            if (!(!!str[i]))
                 return '';
             else if (str[i] == ' ' || str[i] == this.firstSeperator || str[i] == this.secondSeperator)
                 return (!!str.substring(i) ? str.substring(i) : '');
@@ -195,33 +208,34 @@ class atc_kev {
 
     // function to validate additional characters
     atc_validate_additional_chars() {
+
         let str = document.getElementById(this.atc_input_id).value;
-        
+
         let isvalid = true;
         this.atc_src_arr.forEach((el) => {
 
-                if (isvalid && !!el.atc_additional_start_char) {
-                    let start_char = el.atc_additional_start_char;
-                    let end_char = el.atc_additional_end_char;
+            if (isvalid && (!!el.atc_additional_start_char || !!el.atc_additional_start_char_for_validaton)) {
+                let start_char = el.atc_additional_start_char ?? el.atc_additional_start_char_for_validaton ?? null;
+                let end_char = el.atc_additional_end_char;
 
-                    let start_char_count = 0;
-                    let end_char_count = 0;
+                let start_char_count = 0;
+                let end_char_count = 0;
 
-                    for (let i = 0; i < str.length; i++) {
-                        if (str[i] == start_char) {
-                            start_char_count++;
-                        }
-                        if (str[i] == end_char) {
-                            end_char_count++;
-                        }
+                for (let i = 0; i < str.length; i++) {
+                    if (str[i] == start_char) {
+                        start_char_count++;
                     }
-
-                    if (start_char_count != end_char_count) {
-                        alert("Please close all " + el.atc_additional_start_char);
-                        isvalid = false;
+                    if (str[i] == end_char) {
+                        end_char_count++;
                     }
                 }
+
+                if (start_char_count != end_char_count) {
+                    alert("Please close all " + start_char);
+                    isvalid = false;
+                }
             }
+        }
         );
 
         return isvalid;
