@@ -4,7 +4,11 @@
 
 Simple Open source Auto-Complete library using vanilla JavaScript with NO dependency
 
-<img src="https://github.com/kev7037/KutoComplete.Js/blob/main/KutoComplete_demo.gif" width="900" height="400" />
+Check the live demo!
+
+> https://kev7037.github.io/KutoComplete/
+
+<img src="https://github.com/kev7037/KutoComplete.Js/blob/main/KutoComplete_demo.gif" width="800" height="300" />
 
 # How to use
 > No dependencies, just pure javascript :)
