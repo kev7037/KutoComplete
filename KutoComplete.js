@@ -10,14 +10,14 @@
  */
 
 class atc_kev_model {
-    atc_seperator;
+    atc_separator;
     atc_data;
     atc_additional_start_char;
     atc_additional_end_char;
     atc_additional_start_char_for_validaton;
-    constructor(seperator, data, additional_start_char, additional_end_char, atc_additional_start_char_for_validaton) {
+    constructor(separator, data, additional_start_char, additional_end_char, atc_additional_start_char_for_validaton) {
         this.atc_data = data;
-        this.atc_seperator = seperator;
+        this.atc_separator = separator;
         this.atc_additional_start_char = additional_start_char;
         this.atc_additional_end_char = additional_end_char;
         this.atc_additional_start_char_for_validaton = atc_additional_start_char_for_validaton;
@@ -77,7 +77,7 @@ class atc_kev {
             let itr_dict;
 
             this.atc_src_arr.forEach((el, idx) => {
-                if (inputText.trim().startsWith(el.atc_seperator)) {
+                if (inputText.trim().startsWith(el.atc_separator)) {
                     itr_dict = el.atc_data;
                     this.atc_selectedDict = idx;
                     return;
@@ -192,7 +192,7 @@ class atc_kev {
         for (let i = index; i <= str.length; i++) {
             if (!(!!str[i]))
                 return '';
-            else if (str[i] == ' ' || str[i] == this.firstSeperator || str[i] == this.secondSeperator)
+            else if (str[i] == ' ' || str[i] == this.firstseparator || str[i] == this.secondseparator)
                 return (!!str.substring(i) ? str.substring(i) : '');
         }
     }
@@ -200,7 +200,7 @@ class atc_kev {
     //js function to remove character from given index of string until it reaches a space
     atc_removeCharFromIndex(str, index, str2 = "") {
         let lastChar = str.substring(index);
-        if (lastChar == ' ' || this.atc_src_arr.find(x => x.atc_seperator == lastChar))
+        if (lastChar == ' ' || this.atc_src_arr.find(x => x.atc_separator == lastChar))
             return str + str2;
         else
             return this.atc_removeCharFromIndex(str.substring(0, index), index - 1, str2);
