@@ -1,0 +1,37 @@
+<html>
+
+<head>
+    <title>Auto Complete Simple Library</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Simple Open source Auto-Complete library using vanilla JavaScript with no dependency - kev7037">
+    <script src="./KutoComplete.js"></script>
+</head>
+
+<body>
+
+    <input id="tst" type="text" style="width: 100%; margin-bottom:5px;" /><br />
+    <button onclick="btn_clicked()">Input Validaton</button>
+
+    <script>
+        var html_input_id = 'tst';
+
+        var data_arr1 = ['sum', 'avg', 'max', 'min'];
+        var data_arr2 = ['n1.personid', 'n2.id', 'n1.userid'];
+
+        var atc_model_list = [
+            new atc_kev_model("#", data_arr1, '(', ')', null),
+            new atc_kev_model("[", data_arr2, null, ']', '[')
+        ];
+
+        var atc_instance = new atc_kev(html_input_id, atc_model_list);
+        atc_instance.atc_init();
+
+        function btn_clicked(){
+            alert(atc_instance.atc_validate_additional_chars());
+        }
+
+    </script>
+</body>
+
+</html>
